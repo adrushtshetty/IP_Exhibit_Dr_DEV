@@ -430,7 +430,7 @@ def bmi():
     weight = float(request.form['weight'])
     bmi = weight / (height ** 2)
     bmi = round(bmi, 2)
-    return render_template("BMI_CONFIRM.html", bmi_fv='{}'.format(bmi))
+    return render_template("BMI_Confirm.html", bmi_fv='{}'.format(bmi))
 
 
 @app.route('/comprehensive', methods=['POST'])
