@@ -151,267 +151,93 @@ function showPosition(position) {
             <h2 class="mb-2 title-color">Diabetes </h2>
             <p class="mb-4">Filling in all the fields is a must.</p>
 
-               <form action="{{ url_for('diabetes')}}" method="post" >
+               <form class="appoinment-form" action="{{ url_for('diabetes')}}" method="post" >
 
 				   								<p>
-				   									<div><h3>Do you have high Blood Pressure?</h3>
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="BP" value=1 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">Yes</div>
-
-												  </label>
-
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="BP" value=0 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">No</div>
-													</div>
+				   									<div>
+				   										<h3>No. of pregnancies</h3>
+				   										<div class="col-lg-6">
+															<div class="form-group">
+																<input name="preg"  type="Number" class="form-control" placeholder="Enter here: ">
+															</div>
+														</div>
+				   									</div>
 												</p>
-
 												<p>
-				   									<div><h3>Do you have high Cholesterol levels?</h3>
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="chol" value=1 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">Yes</div>
-												  </label>
-
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="chol" value=0 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">No</div>
-													</div>
-												</p>
-				   								<p>
-				   									<div><h3>Select Your BMI</h3>
-
-				   										<div class="slider-ui color5" style="transform: translate(+2%, -100%);margin-bottom: -4%">
-															<input type="range" min="10" max="100" step="1" name="bmi">
-															<div class="bar">
-																<span class="min"></span>
-																<span class="max"></span>
+				   									<div>
+				   										<h3>Average Glucose</h3>
+				   										<div class="col-lg-6">
+															<div class="form-group">
+																<input name="gluc"  type="Number" class="form-control" placeholder="Enter here: ">
 															</div>
-															<div class="track">
-																<div class="value"></div>
+														</div>
+				   									</div>
+												</p>
+				   								<p>
+				   									<div>
+				   										<h3>Diastolic (mm Hg)</h3>
+				   										<div class="col-lg-6">
+															<div class="form-group">
+																<input name="bp"  type="Number" class="form-control" placeholder="Enter here: ">
 															</div>
-
-<!--					   								<div class="slider-ui color1" style="transform: translate(+2%, -100%);margin-bottom: -4%">-->
-<!--														<input type="range" min="10" max="100" step="1" name="bmi">-->
-<!--														<div class="bar">-->
-<!--															<span class="min"></span>-->
-<!--															<span class="max"></span>-->
-<!--														</div>-->
-<!--														<div class="track">-->
-<!--															<div class="value"></div>-->
-<!--														</div>-->
-<!--													</div>-->
-					   								<script>
-														const sliders = document.querySelectorAll(".slider-ui");
-														sliders.forEach(slider => {
-															let input = slider.querySelector("input[type=range]");
-															let min = input.getAttribute("min");
-															let max = input.getAttribute("max");
-															let valueElem = slider.querySelector(".value");
-															slider.querySelector(".min").innerText = min;
-															slider.querySelector(".max").innerText = max;
-															function setValueElem() {
-																valueElem.innerText = input.value;
-																let percent = (input.value - min) / (max - min) * 100;
-																valueElem.style.left = percent + "%";
-															}
-															setValueElem();
-															input.addEventListener("input", setValueElem);
-															input.addEventListener("mousedown", () => {
-																valueElem.classList.add("up");
-															});
-															input.addEventListener("mouseup", () => {
-																valueElem.classList.remove("up");
-															});
-														});
-													</script>
-													</div>
+														</div>
+				   									</div>
 												</p>
 				   								<p>
-				   									<div><h3>Do you smoke?</h3>
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="smoker" value=1 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">Yes</div>
-												  </label>
-
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="smoker" value=0 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">No</div>
-													</div>
+				   									<div>
+				   										<h3>Skin Thickness (mm)</h3>
+				   										<p>Triceps skin fold thickness (mm)</p>
+				   										<div class="col-lg-6">
+															<div class="form-group">
+																<input name="skin"  type="Number" class="form-control" placeholder="Enter here: ">
+															</div>
+														</div>
+				   									</div>
 												</p>
 				   								<p>
-				   									<div><h3>Have you ever experienced a stroke?</h3>
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="stroke" value=1 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">Yes</div>
-												  </label>
-
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="stroke" value=0 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">No</div>
-													</div>
+				   									<div>
+				   										<h3>Insulin (mu U/ml)</h3>
+				   										<p>2-Hour serum insulin (mu U/ml)</p>
+				   										<div class="col-lg-6">
+															<div class="form-group">
+																<input name="insulin"  type="Number" class="form-control" placeholder="Enter here: ">
+															</div>
+														</div>
+				   									</div>
 												</p>
 				   								<p>
-				   									<div><h3>Do you have any Cardiovascular Diseases?</h3>
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="cvd" value=1 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">Yes</div>
-												  </label>
-
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="cvd" value=0 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">No</div>
-													</div>
+				   									<div>
+				   										<h3>BMI</h3>
+				   										<div class="copyright">
+															If you don't know your bmi find it out from our <a href="/bmi" target="_blank" rel="noreferrer noopener">BMI Calculator</a>
+														</div>
+				   										<div class="col-lg-6">
+															<div class="form-group">
+																<input name="bmi" step="any" type="Number" class="form-control" placeholder="Enter here: ">
+															</div>
+														</div>
+				   									</div>
 												</p>
 				  								<p>
-				   									<div><h3>Do you engage in physical activity?</h3>
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="act" value=1 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">Yes</div>
-												  </label>
-
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="act" value=0 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">No</div>
-													</div>
-												</p>
-				   								<p>
-				   									<div><h3>Do you consume fruits on a daily basis?</h3>
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="fruit" value=1 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">Yes</div>
-												  </label>
-
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="fruit" value=0 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">No</div>
-													</div>
-												</p>
-				   								<p>
-				   									<div><h3>Do you consume the right amount of vegetables?</h3>
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="veg" value=1 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">Yes</div>
-												  </label>
-
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="veg" value=0 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">No</div>
-													</div>
-												</p>
-				   								<p>
-				   									<div><h3>Are you a heavy alcoholic?</h3>
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="alc" value=1 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">Yes</div>
-												  </label>
-
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="alc" value=0 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">No</div>
-													</div>
-												</p>
-				   								 <p>
-				   									<div><h3>Rate your general health</h3>
-
-					   									<div class="range-input" style="translate(+100%, -100%); margin-left;-40%;margin-top:2.5%">
-														  <input name="genHlt" type="range" min="0" max="5" value="0" step="1">
-														  <div class="value">
-															<div></div>
-														  </div>
+				   									<div>
+				   										<h3>Diabetes pedigree function</h3>
+				   										<div class="col-lg-6">
+															<div class="form-group">
+																<input name="pedigree"  step="any" type="Number" class="form-control" placeholder="Enter here: ">
+															</div>
 														</div>
-															<script>
-																let rangeInput = document.querySelector(".range-input input");
-																let rangeValue = document.querySelector(".range-input .value div");
-
-																let start = parseFloat(rangeInput.min);
-																let end = parseFloat(rangeInput.max);
-																let step = parseFloat(rangeInput.step);
-
-																for(let i=start;i<=end;i+=step){
-																  rangeValue.innerHTML += '<div>'+i+'</div>';
-																}
-
-																rangeInput.addEventListener("input",function(){
-																  let top = parseFloat(rangeInput.value)/step * -40;
-																  rangeValue.style.marginTop = top+"px";
-																});
-													</script>
-	</div>
-
-													</div>
+				   									</div>
 												</p>
 				   								<p>
-				   									<div style="margin-top:5%"><h3>Do you face difficulty in walking?</h3>
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="walk" value=1 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">Yes</div>
-												  </label>
-
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="walk" value=0 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">No</div>
-													</div>
-												</p>
-				   								<p>
-				   									<div ><h3>Sex</h3>
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="sex" value=1 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">Male</div>
-												  </label>
-
-												  <label class="rad-label">
-													<input type="radio" class="rad-input" name="sex" value=0 required>
-													<div class="rad-design"></div>
-													<div class="rad-text">Female</div>
-													</div>
-												</p>
-												<p>
-				   									<div ><h3>Select your age category</h3>
-
-													<div class="box" style="margin-bottom:15px;margin-top:3%">
-														  <select name="age">
-															  <option selected disabled>Select Age Category</option>
-															<option value="1">Age 18 - 24</option>
-															<option value="2">Age 25 to 29</option>
-															<option value="3">Age 30 to 34</option>
-															<option value="4">Age 35 to 39</option>
-															<option value="5">Age 40 to 44</option>
-															  <option value="6">Age 45 to 49</option>
-															  <option value="7">Age 50 to 54</option>
-															  <option value="8">Age 55 to 59</option>
-															  <option value="9">Age 60 to 64</option>
-															  <option value="10">Age 65 to 69</option>
-															  <option value="11">Age 70 to 74</option>
-															  <option value="12">Age 75 to 79</option>
-															  <option value="13">Age 80 or older</option>
-														  </select>
+				   									<div>
+				   										<h3>Age</h3>
+				   										<div class="col-lg-6">
+															<div class="form-group">
+																<input name="age" type="Number" class="form-control" placeholder="Enter here: ">
+															</div>
 														</div>
+				   									</div>
 												</p>
-<!--				   <br>-->
-
 
 												<br>
 

@@ -8,7 +8,7 @@ import pickle
 app = Flask(__name__)
 model = pickle.load(open('COVID19.pkl', 'rb'))
 model1 = pickle.load(open('AlergyColdCovidReduced.pkl', 'rb'))
-model2 = pickle.load(open('DIABETES1.pkl', 'rb'))
+model2 = pickle.load(open('diabetes.pkl', 'rb'))
 model3 = pickle.load(open("CVD.pkl", 'rb'))
 model4 = pickle.load(open('Comprehensive.pkl', 'rb'))
 model5 = pickle.load(open('stroke.pkl', 'rb'))
@@ -370,11 +370,9 @@ def diabetes():
         output = "Not Diabetic"
         msg = "lessgo..."
     elif prediction[0] == 1:
-        output = "Pre Diabetic"
-        msg = "Take care."
-    elif prediction[0] == 2:
         output = "Diabetic"
         msg = "Take care."
+
     return render_template("DIABETES_Confirm.html", prediction_text='{}'.format(output), msg_text='{}'.format(msg))
 
 
