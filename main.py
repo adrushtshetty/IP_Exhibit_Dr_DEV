@@ -106,7 +106,7 @@ def query():
                 Phone No.: {pNo}
                 Mail Id: {pMail}
 
-                """.format(pName=Name, pSubject=subject, pMail=Mail, pNo=Phone, pmessage=Messaged)
+                """.format(pName=Name, pSubject=subject, pMail=Mail, pNo=Phone, pmessage=Message)
     em = EmailMessage()
     em['From'] = email_sender
     em['To'] = email_receiver
