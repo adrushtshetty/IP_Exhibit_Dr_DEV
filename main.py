@@ -67,10 +67,61 @@ def about():
 def bookUI():
     return render_template("appoinment.html")
 
+@app.route('/query')
+def queryUI():
+    return render_template("query.html")
+
+@app.route('/query', methods=['POST'])
+def query():
+    from email.message import EmailMessage
+    import ssl
+    import smtplib
+    import certifi
+
+    name = request.form['name']
+    phone = request.form['phone']
+    message = request.form['message']
+    pt_mail = request.form['mail']
+    subject = request.form['subject']
+    Name = name
+    Phone = phone
+    Mail = str(pt_mail)
+    Message = message
+    # msge = "Dept: ", Dept, "Name: ", Name, "Phone: ", Phone, "Date: ", Date, "Slot: ", Slot, "Message: ", Message
+    # msge = str(msge)
+
+    email_sender = "drdev.maill@gmail.com"
+    email_password = "mmieeonadmnrylqz"
+    email_receiver = ["adrushtshetty@gmail.com", "nithishg2005@gmail.com", "pikaa1024@gmail.com",
+                      "doctor.dev.ml@gmail.com"]
+    subject = subject + ": " + Name + ", Phone No: " + Phone
+    body = """
+                {pName} has a query on the subject {pSubject}.
+
+                {pName}'s Message:
+                {pmessage}
+                --------------------------------------------------------
+
+                {pName}
+                Phone No.: {pNo}
+                Mail Id: {pMail}
+
+                """.format(pName=Name, pSubject=subject, pMail=Mail, pNo=Phone, pmessage=Messaged)
+    em = EmailMessage()
+    em['From'] = email_sender
+    em['To'] = email_receiver
+    em['subject'] = subject
+    em.set_content(body)
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+        smtp.login(email_sender, email_password)
+        smtp.sendmail(email_sender, email_receiver, em.as_string())
+
+    return render_template("index.html")
+
 
 @app.route('/book', methods=['POST'])
 def book():
-    import smtplib
     dept = request.form['Department']
     slot = request.form['slot']
     name = request.form['name']
@@ -86,95 +137,178 @@ def book():
     msge = "Dept: ", Dept, "Name: ", Name, "Phone: ", Phone, "Date: ", Date, "Slot: ", Slot, "Message: ", Message
     msge = str(msge)
 
-    # fromMy = 'doctor.dev@yahoo.com'  # fun-fact: "from" is a keyword in python, you can't use it as variable.. did anyone check if this code even works?
-    # to = 'noelgjose05@gmail.com'
-    # subj = 'Appointment'
-    # date = str(date)
-    # message_text = msge
-    #
-    # msg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % (fromMy, to, subj, date, message_text)
-    #
-    # username = str('doctor.dev@yahoo.com')
-    # password = str('DoctorDave2022')
-    #
-    # server = smtplib.SMTP("smtp.mail.yahoo.com", 465)
-    # server.login(username, password)
-    # server.sendmail(fromMy, to, msg)
-    # server.quit()
-    # print('ok the email has sent ')
+    from email.message import EmailMessage
+    import ssl
+    import smtplib
+    import certifi
 
-    # import smtplib, ssl
-    # dept = request.form['Department']
-    # date = request.form['date']
-    # slot = request.form['slot']
-    # name = request.form['name']
-    # phone = request.form['phone']
-    # message = request.form['message']
-    #
-    # Dept = dept
-    # Name= name
-    # Phone = phone
-    # Date = str(date)
-    # Slot = slot
-    # Message = message
-    # msge = "Dept: ", Dept,"Name: ", Name, "Phone: ", Phone, "Date: ", Date, "Slot: ", Slot, "Message: ", Message
-    # msge = str(msge)
-    # port = 587  # For starttls
-    # smtp_server = "smtp.gmail.com"
-    # sender_email = "doctor.dev@yahoo.com"
-    # receiver_email = "noelgjose05@gmail.com"
-    # password = "DoctorDave2022"
-    # message = """\
-    # Subject: Hi there
-    #
-    # This message is sent from Python."""
-    #
-    # context = ssl.create_default_context()
-    # with smtplib.SMTP(smtp_server, port) as server:
-    #     server.ehlo()  # Can be omitted
-    #     server.starttls(context=context)
-    #     server.ehlo()  # Can be omitted
-    #     server.login(sender_email, password)
-    #     server.sendmail(sender_email, receiver_email, message)
+    dept = request.form['Department']
+    slot = request.form['slot']
+    name = request.form['name']
+    phone = request.form['phone']
+    message = request.form['message']
+    pt_mail = request.form['mail']
+    date = request.form['date']
+    Dept = dept
+    Name = name
+    Phone = phone
+    Mail = str(pt_mail)
+    Date = str(date)
+    Slot = slot
+    Message = message
+    msge = "Dept: ", Dept, "Name: ", Name, "Phone: ", Phone, "Date: ", Date, "Slot: ", Slot, "Message: ", Message
+    msge = str(msge)
 
-    # import smtplib
-    # dept = request.form['Department']
-    # date = request.form['date']
-    # slot = request.form['slot']
-    # name = request.form['name']
-    # phone = request.form['phone']
-    # message = request.form['message']
-    #
-    # Dept = dept
-    # Name= name
-    # Phone = phone
-    # Date = str(date)
-    # Slot = slot
-    # Message = message
-    # msge = "Dept: ", Dept,"Name: ", Name, "Phone: ", Phone, "Date: ", Date, "Slot: ", Slot, "Message: ", Message
-    # msge = str(msge)
-    # Subject = "Patient on " + Date
-    # gmail_user = 'doctor.dev@yahoo.com'
-    # gmail_password = 'DrDave2022'
-    #
-    # sent_from = gmail_user
-    # to = ['adrushtshetty@gmail.com','noelgjose05@gmail.com','noelg2122.11a@rcis.in']
-    # subject = Subject
-    # body = msge
-    #
-    # email_text = """\
-    #     From: %s
-    #     To: %s
-    #     Subject: %s
-    #
-    #     %s
-    #     """ % (sent_from, ", ".join(to), subject, body)
-    #
-    # smtp_server = smtplib.SMTP_SSL('smtp.gmail.com', 587)
-    # smtp_server.ehlo()
-    # smtp_server.login(gmail_user, gmail_password)
-    # smtp_server.sendmail(sent_from, to, email_text)
-    # smtp_server.close()
+    email_sender = "drdev.maill@gmail.com"
+    email_password = "mmieeonadmnrylqz"
+    email_receiver = ["adrushtshetty@gmail.com", "nithishg2005@gmail.com", "pikaa1024@gmail.com",
+                      "doctor.dev.ml@gmail.com"]
+    subject = "Appointment on " + Date + ". Slot: " + Slot + " Dept: " + Dept
+    body = """
+            {pName} needs an appointment in the {pdept} department, 
+            on the {pdate} for the {pslot} slot.
+
+            {pName}'s Message:
+            {pmessage}
+            --------------------------------------------------------
+
+            {pName}
+            Phone No.: {pNo}
+            Mail Id: {pMail}
+
+            """.format(pName=Name, pdept=Dept, pdate=Date, pMail=Mail, pNo=Phone, pmessage=Message, pslot=Slot)
+    em = EmailMessage()
+    em['From'] = email_sender
+    em['To'] = email_receiver
+    em['subject'] = subject
+    em.set_content(body)
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+        smtp.login(email_sender, email_password)
+        smtp.sendmail(email_sender, email_receiver, em.as_string())
+
+    import fileinput
+    import shutil
+    import smtplib
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+    name = Name
+    dept1 = Dept
+    Phone1 = Phone
+    pt_mail1 = pt_mail
+    date1 = Date
+    Slot1 = Slot
+    Usr = name
+
+    filename = Usr + '.html'
+    shutil.copy('usermail.html', filename)
+    print(filename)
+
+    if dept == "Dental":
+        srchline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/f1ABfs6pswzdUrSOvLLZ6X0wS4v5XkYrZ9WcXhBJV4TiW7A462GBSAtepUUkFPo2a0AUXNOGHNvDXtXHe7T2ubDjqkv0pbCIrczspkU7pSGjwC0KLJ104MCWY3Y9CzCPakZbXEcsMA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        rplline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/qB_QFiGU4NZ3tPnU-XPCfAKNHd3edTGE6k__c7Rbe5rZkKtwKWigqKbhNUlfKP_oTzzC9s-4uz5ns0_T5t0SvOXoqf9kph2ZCV-xoC8zajC4qfOFgMkuouOaDWvfj3SdrPIr5tCHxA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        with fileinput.FileInput(filename, inplace=True) as file:
+            for line in file:
+                print(line.replace(srchline, rplline), end='')
+    elif dept == "Cardiology":
+        srchline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/f1ABfs6pswzdUrSOvLLZ6X0wS4v5XkYrZ9WcXhBJV4TiW7A462GBSAtepUUkFPo2a0AUXNOGHNvDXtXHe7T2ubDjqkv0pbCIrczspkU7pSGjwC0KLJ104MCWY3Y9CzCPakZbXEcsMA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        rplline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/H7wXYjQuxPA3gy_Ayi2ZQyJyZaywgDV911RlvXFdo7jDdQ5ibAfmmIAEu14mtfI_F_tBdOQBSi13MsskjRrAnJnRqQ2VsmhFz00wxd8HSmGYuVBhKiz3hfDue_Z3nUVW0BPCeMcUtw=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        with fileinput.FileInput(filename, inplace=True) as file:
+            for line in file:
+                print(line.replace(srchline, rplline), end='')
+    elif dept == "Dermatology":
+        srchline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/f1ABfs6pswzdUrSOvLLZ6X0wS4v5XkYrZ9WcXhBJV4TiW7A462GBSAtepUUkFPo2a0AUXNOGHNvDXtXHe7T2ubDjqkv0pbCIrczspkU7pSGjwC0KLJ104MCWY3Y9CzCPakZbXEcsMA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        rplline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/TuvNAJINod6EbC_adSeMrYCGwU0w3j2hgKWI3km_W7Hn46arGZCMV5DclyXAHMygxJgqbf4PINTLumemxVQ5iq52SJt_yKLUfzz5GNpWVrU6uik7s6FaLlFfyAAa0yE_HCjuhO0N5g=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        with fileinput.FileInput(filename, inplace=True) as file:
+            for line in file:
+                print(line.replace(srchline, rplline), end='')
+    elif dept == "General Check-Up":
+        srchline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/f1ABfs6pswzdUrSOvLLZ6X0wS4v5XkYrZ9WcXhBJV4TiW7A462GBSAtepUUkFPo2a0AUXNOGHNvDXtXHe7T2ubDjqkv0pbCIrczspkU7pSGjwC0KLJ104MCWY3Y9CzCPakZbXEcsMA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        rplline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/n6ewD4b_HoFU0PcJyotOVFIE9V1L3jgqa20l3FM_zySVfLvhRAtPJMsb4sAqaPADmWd37lOzrBlXafm3CTgw6zbgCqIf5rGTdkPgfppnQc8WC2oLh4KVyh4ym-4Eb9lwJCfFfyk1aA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        with fileinput.FileInput(filename, inplace=True) as file:
+            for line in file:
+                print(line.replace(srchline, rplline), end='')
+    elif dept == "Clinical Laboratory":
+        srchline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/f1ABfs6pswzdUrSOvLLZ6X0wS4v5XkYrZ9WcXhBJV4TiW7A462GBSAtepUUkFPo2a0AUXNOGHNvDXtXHe7T2ubDjqkv0pbCIrczspkU7pSGjwC0KLJ104MCWY3Y9CzCPakZbXEcsMA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        rplline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/CIzu70Ef_aZw_uB3nC_yR1UYpGsMTjAazO4C8dYGF9LgR_bIaOeZCWmiEwElETQkiQqAs71inyx6-q5z5XZZw6Ynt1ARLJ1dsl_71abFBPELdnD0hzqV9exsHC51rEfibLqgX18EsA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        with fileinput.FileInput(filename, inplace=True) as file:
+            for line in file:
+                print(line.replace(srchline, rplline), end='')
+    elif dept == "Ophthalmology":
+        srchline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/f1ABfs6pswzdUrSOvLLZ6X0wS4v5XkYrZ9WcXhBJV4TiW7A462GBSAtepUUkFPo2a0AUXNOGHNvDXtXHe7T2ubDjqkv0pbCIrczspkU7pSGjwC0KLJ104MCWY3Y9CzCPakZbXEcsMA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        rplline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/IXxfw1NvJe52s00wvyA01I-MlRJxLLds_pv6LTDNZml6p4neKzDH_LBDOwuwO4lJSD2xOiRh0tgNf5acz6Ad8B28RozSsEF4Kl2QHfWy0zEPw5Tpw56K6kpn3ZmaOAwJg99jDIA4nw=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        with fileinput.FileInput(filename, inplace=True) as file:
+            for line in file:
+                print(line.replace(srchline, rplline), end='')
+    elif dept == "Radiology":
+        srchline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/f1ABfs6pswzdUrSOvLLZ6X0wS4v5XkYrZ9WcXhBJV4TiW7A462GBSAtepUUkFPo2a0AUXNOGHNvDXtXHe7T2ubDjqkv0pbCIrczspkU7pSGjwC0KLJ104MCWY3Y9CzCPakZbXEcsMA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        rplline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/zi_5Hx9ITyM3YKcuOTtcrb5rda0BkoSlyynjPd6xnpyBgrV9Na2ZX5pAUsW8w8AsGjT4wL49JQON3djNrhDgiodEEou7dhklfBM2lrxSij5_if-LL32tLZKSb4qI1uFRA5jVB1PSwA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        with fileinput.FileInput(filename, inplace=True) as file:
+            for line in file:
+                print(line.replace(srchline, rplline), end='')
+
+
+    with fileinput.FileInput(filename, inplace=True) as file:
+        for line in file:
+            print(line.replace("<!--Name-->", Usr), end='')
+
+    with fileinput.FileInput(filename, inplace=True) as file:
+        for line in file:
+            print(line.replace("<!--Dental-->", dept1), end='')
+
+    with fileinput.FileInput(filename, inplace=True) as file:
+        for line in file:
+            print(line.replace("<!--Name1-->", Usr), end='')
+    with fileinput.FileInput(filename, inplace=True) as file:
+        for line in file:
+            print(line.replace('<!--+91987654321-->', Phone1), end='')
+
+    with fileinput.FileInput(filename, inplace=True) as file:
+        for line in file:
+            print(line.replace('<!--something@gmail.com-->', pt_mail1), end='')
+
+    with fileinput.FileInput(filename, inplace=True) as file:
+        for line in file:
+            print(line.replace('<!--2022/11/03-->', date1), end='')
+
+    with fileinput.FileInput(filename, inplace=True) as file:
+        for line in file:
+            print(line.replace('<!--12:00 - 13:00-->', Slot1), end='')
+
+    file1 = open(filename, 'r')
+    Lines = file1.readlines()
+
+    str1 = (''.join(Lines))
+
+    me = "drdev.maill@gmail.com"
+    you = pt_mail1
+    # you=request.form['Mail']
+    print(you)
+    # you = "adrushtshetty@gmail.com"
+
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = "Appointment Confirmation"
+    msg['From'] = me
+    msg['To'] = you
+    html = str1
+
+    part2 = MIMEText(html, 'html')
+    msg.attach(part2)
+    mail = smtplib.SMTP('smtp.gmail.com', 587)
+
+    mail.ehlo()
+
+    mail.starttls()
+
+    mail.login('drdev.maill@gmail.com', 'mmieeonadmnrylqz')
+    mail.sendmail(me, you, msg.as_string())
+    mail.quit()
+
+    import os
+    if os.path.exists(filename):
+        os.remove(filename)
+    else:
+        pass
     return render_template("Appointment_CONFIRM.html", send_name='{}'.format(Name), send_dept='{}'.format(Dept),
                            send_date='{}'.format(Date), send_slot='{}'.format(Slot))
 
@@ -209,7 +343,7 @@ def bookAppointment():
 
     email_sender = "drdev.maill@gmail.com"
     email_password = "mmieeonadmnrylqz"
-    email_receiver = ["adrushtshetty@gmail.com", "noelgjose05@gmail.com", "doctor.dev.ml@gmail.com"]
+    email_receiver = ["adrushtshetty@gmail.com", "noelgjose05@gmail.com", "pikaa1024@gmail.com","doctor.dev.ml@gmail.com"]
     subject = "Appointment on " + Date + ". Slot: " + Slot + " Dept: " + Dept
     body = """
         {pName} needs an appointment in the {pdept} department, 
@@ -234,95 +368,132 @@ def bookAppointment():
         smtp.login(email_sender, email_password)
         smtp.sendmail(email_sender, email_receiver, em.as_string())
 
-    # fromMy = 'doctor.dev@yahoo.com'  # fun-fact: "from" is a keyword in python, you can't use it as variable.. did anyone check if this code even works?
-    # to = 'noelgjose05@gmail.com'
-    # subj = 'Appointment'
-    # date = str(date)
-    # message_text = msge
-    #
-    # msg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % (fromMy, to, subj, date, message_text)
-    #
-    # username = str('doctor.dev@yahoo.com')
-    # password = str('DoctorDave2022')
-    #
-    # server = smtplib.SMTP("smtp.mail.yahoo.com", 465)
-    # server.login(username, password)
-    # server.sendmail(fromMy, to, msg)
-    # server.quit()
-    # print('ok the email has sent ')
+    import fileinput
+    import shutil
+    import smtplib
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+    name = Name
+    dept1=Dept
+    Phone1=Phone
+    pt_mail1 = pt_mail
+    date1=Date
+    Slot1 = Slot
+    Usr = name
 
-    # import smtplib, ssl
-    # dept = request.form['Department']
-    # date = request.form['date']
-    # slot = request.form['slot']
-    # name = request.form['name']
-    # phone = request.form['phone']
-    # message = request.form['message']
-    #
-    # Dept = dept
-    # Name= name
-    # Phone = phone
-    # Date = str(date)
-    # Slot = slot
-    # Message = message
-    # msge = "Dept: ", Dept,"Name: ", Name, "Phone: ", Phone, "Date: ", Date, "Slot: ", Slot, "Message: ", Message
-    # msge = str(msge)
-    # port = 587  # For starttls
-    # smtp_server = "smtp.gmail.com"
-    # sender_email = "doctor.dev@yahoo.com"
-    # receiver_email = "noelgjose05@gmail.com"
-    # password = "DoctorDave2022"
-    # message = """\
-    # Subject: Hi there
-    #
-    # This message is sent from Python."""
-    #
-    # context = ssl.create_default_context()
-    # with smtplib.SMTP(smtp_server, port) as server:
-    #     server.ehlo()  # Can be omitted
-    #     server.starttls(context=context)
-    #     server.ehlo()  # Can be omitted
-    #     server.login(sender_email, password)
-    #     server.sendmail(sender_email, receiver_email, message)
 
-    # import smtplib
-    # dept = request.form['Department']
-    # date = request.form['date']
-    # slot = request.form['slot']
-    # name = request.form['name']
-    # phone = request.form['phone']
-    # message = request.form['message']
-    #
-    # Dept = dept
-    # Name= name
-    # Phone = phone
-    # Date = str(date)
-    # Slot = slot
-    # Message = message
-    # msge = "Dept: ", Dept,"Name: ", Name, "Phone: ", Phone, "Date: ", Date, "Slot: ", Slot, "Message: ", Message
-    # msge = str(msge)
-    # Subject = "Patient on " + Date
-    # gmail_user = 'doctor.dev@yahoo.com'
-    # gmail_password = 'DrDave2022'
-    #
-    # sent_from = gmail_user
-    # to = ['adrushtshetty@gmail.com','noelgjose05@gmail.com','noelg2122.11a@rcis.in']
-    # subject = Subject
-    # body = msge
-    #
-    # email_text = """\
-    #     From: %s
-    #     To: %s
-    #     Subject: %s
-    #
-    #     %s
-    #     """ % (sent_from, ", ".join(to), subject, body)
-    #
-    # smtp_server = smtplib.SMTP_SSL('smtp.gmail.com', 587)
-    # smtp_server.ehlo()
-    # smtp_server.login(gmail_user, gmail_password)
-    # smtp_server.sendmail(sent_from, to, email_text)
-    # smtp_server.close()
+    filename = Usr + '.html'
+    shutil.copy('usermail.html', filename)
+    print(filename)
+
+    if dept=="Dental":
+        srchline='<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/f1ABfs6pswzdUrSOvLLZ6X0wS4v5XkYrZ9WcXhBJV4TiW7A462GBSAtepUUkFPo2a0AUXNOGHNvDXtXHe7T2ubDjqkv0pbCIrczspkU7pSGjwC0KLJ104MCWY3Y9CzCPakZbXEcsMA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        rplline='<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/qB_QFiGU4NZ3tPnU-XPCfAKNHd3edTGE6k__c7Rbe5rZkKtwKWigqKbhNUlfKP_oTzzC9s-4uz5ns0_T5t0SvOXoqf9kph2ZCV-xoC8zajC4qfOFgMkuouOaDWvfj3SdrPIr5tCHxA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        with fileinput.FileInput(filename, inplace=True) as file:
+            for line in file:
+                print(line.replace(srchline, rplline), end='')
+    elif dept == "Cardiology":
+        srchline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/f1ABfs6pswzdUrSOvLLZ6X0wS4v5XkYrZ9WcXhBJV4TiW7A462GBSAtepUUkFPo2a0AUXNOGHNvDXtXHe7T2ubDjqkv0pbCIrczspkU7pSGjwC0KLJ104MCWY3Y9CzCPakZbXEcsMA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        rplline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/H7wXYjQuxPA3gy_Ayi2ZQyJyZaywgDV911RlvXFdo7jDdQ5ibAfmmIAEu14mtfI_F_tBdOQBSi13MsskjRrAnJnRqQ2VsmhFz00wxd8HSmGYuVBhKiz3hfDue_Z3nUVW0BPCeMcUtw=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        with fileinput.FileInput(filename, inplace=True) as file:
+            for line in file:
+                print(line.replace(srchline, rplline), end='')
+    elif dept == "Dermatology":
+        srchline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/f1ABfs6pswzdUrSOvLLZ6X0wS4v5XkYrZ9WcXhBJV4TiW7A462GBSAtepUUkFPo2a0AUXNOGHNvDXtXHe7T2ubDjqkv0pbCIrczspkU7pSGjwC0KLJ104MCWY3Y9CzCPakZbXEcsMA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        rplline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/TuvNAJINod6EbC_adSeMrYCGwU0w3j2hgKWI3km_W7Hn46arGZCMV5DclyXAHMygxJgqbf4PINTLumemxVQ5iq52SJt_yKLUfzz5GNpWVrU6uik7s6FaLlFfyAAa0yE_HCjuhO0N5g=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        with fileinput.FileInput(filename, inplace=True) as file:
+            for line in file:
+                print(line.replace(srchline, rplline), end='')
+    elif dept == "General Check-Up":
+        srchline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/f1ABfs6pswzdUrSOvLLZ6X0wS4v5XkYrZ9WcXhBJV4TiW7A462GBSAtepUUkFPo2a0AUXNOGHNvDXtXHe7T2ubDjqkv0pbCIrczspkU7pSGjwC0KLJ104MCWY3Y9CzCPakZbXEcsMA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        rplline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/n6ewD4b_HoFU0PcJyotOVFIE9V1L3jgqa20l3FM_zySVfLvhRAtPJMsb4sAqaPADmWd37lOzrBlXafm3CTgw6zbgCqIf5rGTdkPgfppnQc8WC2oLh4KVyh4ym-4Eb9lwJCfFfyk1aA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        with fileinput.FileInput(filename, inplace=True) as file:
+            for line in file:
+                print(line.replace(srchline, rplline), end='')
+    elif dept == "Clinical Laboratory":
+        srchline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/f1ABfs6pswzdUrSOvLLZ6X0wS4v5XkYrZ9WcXhBJV4TiW7A462GBSAtepUUkFPo2a0AUXNOGHNvDXtXHe7T2ubDjqkv0pbCIrczspkU7pSGjwC0KLJ104MCWY3Y9CzCPakZbXEcsMA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        rplline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/CIzu70Ef_aZw_uB3nC_yR1UYpGsMTjAazO4C8dYGF9LgR_bIaOeZCWmiEwElETQkiQqAs71inyx6-q5z5XZZw6Ynt1ARLJ1dsl_71abFBPELdnD0hzqV9exsHC51rEfibLqgX18EsA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        with fileinput.FileInput(filename, inplace=True) as file:
+            for line in file:
+                print(line.replace(srchline, rplline), end='')
+    elif dept == "Ophthalmology":
+        srchline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/f1ABfs6pswzdUrSOvLLZ6X0wS4v5XkYrZ9WcXhBJV4TiW7A462GBSAtepUUkFPo2a0AUXNOGHNvDXtXHe7T2ubDjqkv0pbCIrczspkU7pSGjwC0KLJ104MCWY3Y9CzCPakZbXEcsMA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        rplline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/IXxfw1NvJe52s00wvyA01I-MlRJxLLds_pv6LTDNZml6p4neKzDH_LBDOwuwO4lJSD2xOiRh0tgNf5acz6Ad8B28RozSsEF4Kl2QHfWy0zEPw5Tpw56K6kpn3ZmaOAwJg99jDIA4nw=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        with fileinput.FileInput(filename, inplace=True) as file:
+            for line in file:
+                print(line.replace(srchline, rplline), end='')
+    elif dept == "Radiology":
+        srchline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/f1ABfs6pswzdUrSOvLLZ6X0wS4v5XkYrZ9WcXhBJV4TiW7A462GBSAtepUUkFPo2a0AUXNOGHNvDXtXHe7T2ubDjqkv0pbCIrczspkU7pSGjwC0KLJ104MCWY3Y9CzCPakZbXEcsMA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        rplline = '<div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="sculptor" class="fullMobileWidth" src="https://lh3.googleusercontent.com/zi_5Hx9ITyM3YKcuOTtcrb5rda0BkoSlyynjPd6xnpyBgrV9Na2ZX5pAUsW8w8AsGjT4wL49JQON3djNrhDgiodEEou7dhklfBM2lrxSij5_if-LL32tLZKSb4qI1uFRA5jVB1PSwA=w2400" style="display: block; height: auto; border: 0; width: 249px; max-width: 100%;" title="sculptor" width="249"/></a></div>'
+        with fileinput.FileInput(filename, inplace=True) as file:
+            for line in file:
+                print(line.replace(srchline, rplline), end='')
+
+
+
+    with fileinput.FileInput(filename, inplace=True) as file:
+        for line in file:
+            print(line.replace("<!--Name-->", Usr), end='')
+
+    with fileinput.FileInput(filename, inplace=True) as file:
+        for line in file:
+            print(line.replace("<!--Dental-->", dept1), end='')
+
+    with fileinput.FileInput(filename, inplace=True) as file:
+        for line in file:
+            print(line.replace("<!--Name1-->",Usr), end='')
+    with fileinput.FileInput(filename, inplace=True) as file:
+        for line in file:
+            print(line.replace('<!--+91987654321-->',Phone1), end='')
+
+    with fileinput.FileInput(filename, inplace=True) as file:
+        for line in file:
+            print(line.replace('<!--something@gmail.com-->',pt_mail1), end='')
+
+    with fileinput.FileInput(filename, inplace=True) as file:
+        for line in file:
+            print(line.replace('<!--2022/11/03-->',date1), end='')
+
+    with fileinput.FileInput(filename, inplace=True) as file:
+        for line in file:
+            print(line.replace('<!--12:00 - 13:00-->',Slot1), end='')
+
+
+
+    file1 = open(filename, 'r')
+    Lines = file1.readlines()
+
+    str1 = (''.join(Lines))
+
+    me = "drdev.maill@gmail.com"
+    you = pt_mail1
+    # you=request.form['Mail']
+    print(you)
+    # you = "adrushtshetty@gmail.com"
+
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = "Appointment Confirmation"
+    msg['From'] = me
+    msg['To'] = you
+    html = str1
+
+    part2 = MIMEText(html, 'html')
+    msg.attach(part2)
+    mail = smtplib.SMTP('smtp.gmail.com', 587)
+
+    mail.ehlo()
+
+    mail.starttls()
+
+    mail.login('drdev.maill@gmail.com', 'mmieeonadmnrylqz')
+    mail.sendmail(me, you, msg.as_string())
+    mail.quit()
+
+    import os
+    if os.path.exists(filename):
+        os.remove(filename)
+    else:
+        pass
     return render_template("Appointment_CONFIRM.html", send_name='{}'.format(Name), send_dept='{}'.format(Dept),
                            send_date='{}'.format(Date), send_slot='{}'.format(Slot))
 
